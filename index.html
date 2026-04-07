@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>PNUT Clicker — Fix the Printer</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- TON Connect UI -->
+    <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
+</head>
+<body>
+    <div class="game-container">
+        <!-- Шапка с балансом и подключением кошелька -->
+        <div class="header">
+            <div class="wallet-section">
+                <div id="wallet-info" class="wallet-info">
+                    <button id="connect-wallet" class="connect-btn">🔌 Connect Wallet</button>
+                </div>
+            </div>
+            <div class="balance-section">
+                <div class="balance-label">Your $PNUT</div>
+                <div class="balance-value" id="pnut-balance">0</div>
+            </div>
+        </div>
+
+        <!-- Принтер для кликов -->
+        <div class="printer-container">
+            <div class="printer" id="printer">
+                <div class="printer-body">
+                    <div class="printer-screen" id="printer-screen">
+                        <div class="error-message">ERROR</div>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" id="progress-bar"></div>
+                        </div>
+                    </div>
+                    <div class="printer-buttons">
+                        <div class="printer-button"></div>
+                        <div class="printer-button"></div>
+                        <div class="printer-button red"></div>
+                    </div>
+                </div>
+                <div class="printer-paper"></div>
+                <div class="peanut-shells" id="peanut-shells"></div>
+            </div>
+            <div class="click-counter">
+                <span id="click-count">0</span> clicks
+            </div>
+            <button id="click-btn" class="click-btn">🔨 FIX THE PRINTER</button>
+        </div>
+
+        <!-- Бонусы и бустеры -->
+        <div class="boosters">
+            <div class="booster" data-booster="double">
+                <div class="booster-icon">⚡</div>
+                <div class="booster-name">Double Click</div>
+                <div class="booster-cost">50 $PNUT</div>
+            </div>
+            <div class="booster" data-booster="auto">
+                <div class="booster-icon">🤖</div>
+                <div class="booster-name">Auto Clicker</div>
+                <div class="booster-cost">200 $PNUT</div>
+            </div>
+            <div class="booster" data-booster="peanut">
+                <div class="booster-icon">🥜</div>
+                <div class="booster-name">Peanut Rain</div>
+                <div class="booster-cost">500 $PNUT</div>
+            </div>
+        </div>
+
+        <!-- Реферальная ссылка -->
+        <div class="referral-section">
+            <div class="referral-title">👥 Invite friends, earn more</div>
+            <div class="referral-link-container">
+                <input type="text" id="referral-link" readonly>
+                <button id="copy-link" class="copy-btn">Copy</button>
+            </div>
+            <div class="referral-stats">
+                Referrals: <span id="referral-count">0</span> | Bonus: <span id="referral-bonus">0</span> $PNUT
+            </div>
+        </div>
+
+        <!-- Лидерборд -->
+        <div class="leaderboard">
+            <div class="leaderboard-title">🏆 Top Clickers 🏆</div>
+            <div id="leaderboard-list" class="leaderboard-list">
+                <div class="leaderboard-loading">Loading...</div>
+            </div>
+        </div>
+
+        <!-- Табло достижений -->
+        <div class="achievements">
+            <div class="achievement" data-achievement="100">
+                <div class="achievement-icon">🔧</div>
+                <div class="achievement-name">Beginner Fixer</div>
+                <div class="achievement-progress">0/100</div>
+            </div>
+            <div class="achievement" data-achievement="1000">
+                <div class="achievement-icon">⚙️</div>
+                <div class="achievement-name">Printer Expert</div>
+                <div class="achievement-progress">0/1000</div>
+            </div>
+            <div class="achievement" data-achievement="10000">
+                <div class="achievement-icon">🏭</div>
+                <div class="achievement-name">Factory Owner</div>
+                <div class="achievement-progress">0/10000</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>-a
+
+
+
+
