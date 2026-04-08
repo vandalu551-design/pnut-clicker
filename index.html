@@ -24,16 +24,12 @@
         .game-container {
             max-width: 500px;
             margin: 0 auto;
-            position: relative;
         }
 
-        /* Кнопка-кружок в правом верхнем углу */
+        /* Маленькая круглая кнопка по центру */
         .wallet-circle {
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 44px;
-            height: 44px;
+            width: 36px;
+            height: 36px;
             background: #3b82f6;
             border-radius: 50%;
             display: flex;
@@ -42,7 +38,7 @@
             cursor: pointer;
             transition: all 0.2s;
             box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-            z-index: 100;
+            margin: 0 auto 12px auto;
         }
 
         .wallet-circle:active {
@@ -50,8 +46,8 @@
         }
 
         .wallet-circle svg {
-            width: 24px;
-            height: 24px;
+            width: 20px;
+            height: 20px;
             stroke: white;
             stroke-width: 2;
             fill: none;
@@ -61,7 +57,6 @@
         .balance-section {
             text-align: center;
             margin-bottom: 20px;
-            padding-top: 8px;
         }
 
         .balance-label {
@@ -467,7 +462,7 @@
 </head>
 <body>
     <div class="game-container">
-        <!-- Кнопка-кружок в правом верхнем углу -->
+        <!-- Маленькая круглая кнопка по центру -->
         <div id="wallet-circle" class="wallet-circle">
             <svg viewBox="0 0 24 24" stroke="white" stroke-width="2" fill="none">
                 <circle cx="12" cy="12" r="10" />
