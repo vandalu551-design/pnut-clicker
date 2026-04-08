@@ -39,6 +39,7 @@
             transition: all 0.2s;
             box-shadow: 0 2px 8px rgba(0,0,0,0.3);
             margin: 0 auto 12px auto;
+            position: relative;
         }
 
         .wallet-circle:active {
@@ -51,6 +52,46 @@
             stroke: white;
             stroke-width: 2;
             fill: none;
+        }
+
+        /* Меню отключения кошелька */
+        .disconnect-menu {
+            position: absolute;
+            top: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #151e2c;
+            border-radius: 12px;
+            padding: 8px 0;
+            min-width: 140px;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            border: 1px solid #2a3a4a;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s, visibility 0.2s;
+        }
+
+        .disconnect-menu.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .disconnect-menu button {
+            width: 100%;
+            background: none;
+            border: none;
+            padding: 10px 16px;
+            color: #ff4444;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: center;
+            transition: background 0.2s;
+        }
+
+        .disconnect-menu button:hover {
+            background: #1e2a3a;
         }
 
         /* Баланс */
@@ -70,7 +111,7 @@
             color: #f5c542;
         }
 
-        /* Полноценный принтер */
+        /* Остальные стили (принтер, бустеры и т.д.) без изменений */
         .printer-container {
             background: #151e2c;
             border-radius: 30px;
@@ -86,7 +127,6 @@
             position: relative;
         }
 
-        /* Стили для 3D принтера */
         .printer-3d {
             background: #2c3e4e;
             border-radius: 20px;
@@ -96,7 +136,6 @@
             border-bottom: 3px solid #1a2a3a;
         }
 
-        /* Верхняя крышка */
         .printer-top {
             background: #34495e;
             border-radius: 15px 15px 5px 5px;
@@ -114,7 +153,6 @@
             margin: 0 auto;
         }
 
-        /* Экран принтера */
         .printer-screen {
             background: #0a0f1e;
             border-radius: 10px;
@@ -130,7 +168,6 @@
             font-size: 12px;
             margin-bottom: 8px;
             animation: blink 1s infinite;
-            text-shadow: 0 0 2px rgba(255,0,0,0.5);
         }
 
         @keyframes blink {
@@ -150,10 +187,8 @@
             width: 0%;
             height: 100%;
             transition: width 0.3s;
-            border-radius: 10px;
         }
 
-        /* Панель кнопок */
         .printer-buttons-panel {
             display: flex;
             gap: 12px;
@@ -167,25 +202,21 @@
             background: #1e2a3a;
             border-radius: 50%;
             box-shadow: inset 0 1px 2px rgba(255,255,255,0.1), 0 2px 4px rgba(0,0,0,0.3);
-            transition: all 0.1s;
         }
 
         .printer-btn.red {
             background: #c0392b;
-            box-shadow: inset 0 1px 2px rgba(255,255,255,0.2), 0 2px 4px rgba(0,0,0,0.3);
         }
 
         .printer-btn.green {
             background: #27ae60;
         }
 
-        /* Лоток для бумаги */
         .paper-tray {
             background: #5d6e7e;
             border-radius: 5px;
             padding: 8px;
             margin-bottom: 15px;
-            position: relative;
         }
 
         .paper-stack {
@@ -208,7 +239,6 @@
             border-radius: 2px;
         }
 
-        /* Выход бумаги сверху */
         .paper-output {
             background: #e0e0e0;
             height: 8px;
@@ -219,76 +249,11 @@
             z-index: 1;
         }
 
-        /* Орехи */
         .peanut-shells {
             margin-top: 15px;
             font-size: 28px;
             letter-spacing: 10px;
             min-height: 55px;
-            text-shadow: 0 0 5px rgba(245,197,66,0.5);
-        }
-
-        /* Анимации эффектов */
-        @keyframes clickFlash {
-            0% { transform: scale(1); }
-            50% { transform: scale(0.98); filter: brightness(1.1); }
-            100% { transform: scale(1); }
-        }
-
-        .printer-clicked {
-            animation: clickFlash 0.1s ease-out;
-        }
-
-        @keyframes shellPop {
-            0% { transform: scale(0) rotate(0deg); opacity: 0; }
-            50% { transform: scale(1.3) rotate(180deg); opacity: 1; }
-            100% { transform: scale(1) rotate(360deg); opacity: 1; }
-        }
-
-        .shell-pop {
-            animation: shellPop 0.4s ease-out;
-            display: inline-block;
-        }
-
-        @keyframes smokeFloat {
-            0% { opacity: 0; transform: translateY(0) scale(0.8); }
-            30% { opacity: 0.8; transform: translateY(-10px) scale(1.1); }
-            100% { opacity: 0; transform: translateY(-40px) scale(1.5); }
-        }
-
-        .smoke-particle {
-            position: absolute;
-            font-size: 24px;
-            pointer-events: none;
-            animation: smokeFloat 0.6s ease-out forwards;
-            filter: blur(1px);
-        }
-
-        @keyframes spark {
-            0% { opacity: 0; transform: scale(0); }
-            50% { opacity: 1; transform: scale(1); }
-            100% { opacity: 0; transform: scale(0); }
-        }
-
-        .spark {
-            position: absolute;
-            width: 6px;
-            height: 6px;
-            background: #ffaa00;
-            border-radius: 50%;
-            pointer-events: none;
-            animation: spark 0.3s ease-out forwards;
-            box-shadow: 0 0 5px #ffaa00;
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-3px); }
-            75% { transform: translateX(3px); }
-        }
-
-        .printer-shake {
-            animation: shake 0.1s ease-in-out 3;
         }
 
         .click-counter {
@@ -314,7 +279,6 @@
             transform: scale(0.98);
         }
 
-        /* Бустеры */
         .boosters {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -352,7 +316,6 @@
             color: #f5c542;
         }
 
-        /* Рефералы */
         .referral-section {
             background: #151e2c;
             border-radius: 16px;
@@ -399,7 +362,6 @@
             text-align: center;
         }
 
-        /* Лидерборд */
         .leaderboard {
             background: #151e2c;
             border-radius: 16px;
@@ -433,7 +395,6 @@
             font-weight: bold;
         }
 
-        /* Достижения */
         .achievements {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -472,7 +433,66 @@
             color: #8aa0b5;
         }
 
-        /* Капча */
+        @keyframes clickFlash {
+            0% { transform: scale(1); }
+            50% { transform: scale(0.98); filter: brightness(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .printer-clicked {
+            animation: clickFlash 0.1s ease-out;
+        }
+
+        @keyframes shellPop {
+            0% { transform: scale(0) rotate(0deg); opacity: 0; }
+            50% { transform: scale(1.3) rotate(180deg); opacity: 1; }
+            100% { transform: scale(1) rotate(360deg); opacity: 1; }
+        }
+
+        .shell-pop {
+            animation: shellPop 0.4s ease-out;
+            display: inline-block;
+        }
+
+        @keyframes smokeFloat {
+            0% { opacity: 0; transform: translateY(0) scale(0.8); }
+            30% { opacity: 0.8; transform: translateY(-10px) scale(1.1); }
+            100% { opacity: 0; transform: translateY(-40px) scale(1.5); }
+        }
+
+        .smoke-particle {
+            position: absolute;
+            font-size: 24px;
+            pointer-events: none;
+            animation: smokeFloat 0.6s ease-out forwards;
+        }
+
+        @keyframes spark {
+            0% { opacity: 0; transform: scale(0); }
+            50% { opacity: 1; transform: scale(1); }
+            100% { opacity: 0; transform: scale(0); }
+        }
+
+        .spark {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: #ffaa00;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: spark 0.3s ease-out forwards;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-3px); }
+            75% { transform: translateX(3px); }
+        }
+
+        .printer-shake {
+            animation: shake 0.1s ease-in-out 3;
+        }
+
         .captcha-overlay {
             position: fixed;
             top: 0;
@@ -541,7 +561,6 @@
             font-size: 14px;
             font-weight: bold;
             z-index: 1000;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
             white-space: nowrap;
         }
     </style>
@@ -549,12 +568,15 @@
 <body>
     <div class="game-container">
         <!-- Кнопка подключения кошелька -->
-        <div id="wallet-circle" class="wallet-circle">
+        <div id="wallet-circle" class="wallet-circle" style="position: relative;">
             <svg viewBox="0 0 24 24" stroke="white" stroke-width="2" fill="none">
                 <circle cx="12" cy="12" r="10" />
                 <line x1="12" y1="8" x2="12" y2="16" />
                 <line x1="8" y1="12" x2="16" y2="12" />
             </svg>
+            <div id="disconnect-menu" class="disconnect-menu">
+                <button id="disconnect-btn">🔌 Disconnect Wallet</button>
+            </div>
         </div>
 
         <!-- Баланс -->
@@ -563,42 +585,30 @@
             <div class="balance-value" id="pnut-balance">0</div>
         </div>
 
-        <!-- Полноценный принтер -->
+        <!-- Принтер -->
         <div class="printer-container">
             <div class="printer" id="printer">
-                <!-- Выход бумаги сверху -->
                 <div class="paper-output"></div>
-
-                <!-- Основной корпус принтера -->
                 <div class="printer-3d">
-                    <!-- Верхняя крышка -->
                     <div class="printer-top">
                         <div class="handle"></div>
                     </div>
-
-                    <!-- Экран -->
                     <div class="printer-screen">
                         <div class="error-message" id="error-message">PAPER JAM</div>
                         <div class="progress-bar-container">
                             <div class="progress-bar" id="progress-bar"></div>
                         </div>
                     </div>
-
-                    <!-- Панель кнопок -->
                     <div class="printer-buttons-panel">
                         <div class="printer-btn"></div>
                         <div class="printer-btn green"></div>
                         <div class="printer-btn red"></div>
                         <div class="printer-btn"></div>
                     </div>
-
-                    <!-- Лоток с бумагой -->
                     <div class="paper-tray">
                         <div class="paper-stack"></div>
                     </div>
                 </div>
-
-                <!-- Орехи -->
                 <div class="peanut-shells" id="peanut-shells"></div>
             </div>
             <div class="click-counter">
@@ -607,7 +617,6 @@
             <button id="click-btn" class="click-btn">🔨 FIX THE PRINTER</button>
         </div>
 
-        <!-- Бустеры, рефералы, лидерборд, достижения (без изменений) -->
         <div class="boosters">
             <div class="booster" data-booster="double">
                 <div class="booster-icon">⚡</div>
@@ -681,6 +690,10 @@
         let captchaActive = false;
         let pendingClicks = 0;
 
+        // DOM элементы
+        const walletCircle = document.getElementById('wallet-circle');
+        const disconnectMenu = document.getElementById('disconnect-menu');
+
         // Загрузка сохранённых данных
         function loadGameData() {
             const saved = localStorage.getItem('pnutClickerData');
@@ -713,6 +726,7 @@
         function initTonConnect() {
             if (typeof TON_CONNECT_UI === 'undefined') {
                 console.log('TON Connect UI not loaded yet');
+                setTimeout(initTonConnect, 500);
                 return;
             }
             
@@ -724,10 +738,9 @@
             tonConnectUI.onStatusChange(async (wallet) => {
                 if (wallet) {
                     walletAddress = wallet.account.address;
-                    const circle = document.getElementById('wallet-circle');
-                    if (circle) {
-                        circle.style.background = '#10b981';
-                        circle.innerHTML = `
+                    if (walletCircle) {
+                        walletCircle.style.background = '#10b981';
+                        walletCircle.innerHTML = `
                             <svg viewBox="0 0 24 24" stroke="white" stroke-width="2" fill="none">
                                 <path d="M20 6L9 17L4 12" stroke="white" stroke-width="2" fill="none"/>
                             </svg>
@@ -736,10 +749,9 @@
                     await fetchRealBalance();
                 } else {
                     walletAddress = null;
-                    const circle = document.getElementById('wallet-circle');
-                    if (circle) {
-                        circle.style.background = '#3b82f6';
-                        circle.innerHTML = `
+                    if (walletCircle) {
+                        walletCircle.style.background = '#3b82f6';
+                        walletCircle.innerHTML = `
                             <svg viewBox="0 0 24 24" stroke="white" stroke-width="2" fill="none">
                                 <circle cx="12" cy="12" r="10" />
                                 <line x1="12" y1="8" x2="12" y2="16" />
@@ -748,12 +760,27 @@
                         `;
                     }
                 }
+                // Скрываем меню при изменении статуса
+                if (disconnectMenu) {
+                    disconnectMenu.classList.remove('show');
+                }
             });
         }
 
         async function fetchRealBalance() {
             if (!walletAddress) return;
             console.log('Fetching real balance for', walletAddress);
+        }
+
+        // Отключение кошелька
+        function disconnectWallet() {
+            if (tonConnectUI) {
+                tonConnectUI.disconnect();
+            }
+            if (disconnectMenu) {
+                disconnectMenu.classList.remove('show');
+            }
+            showToast('🔌 Wallet disconnected');
         }
 
         // ========== Эффекты ==========
@@ -790,17 +817,14 @@
             pnutBalance += earnAmount;
             clicks++;
             
-            // Анимация принтера
             const printer = document.getElementById('printer');
             if (printer) {
                 printer.classList.add('printer-clicked');
                 setTimeout(() => printer.classList.remove('printer-clicked'), 100);
             }
             
-            // Эффекты
             shakePrinter();
             
-            // Случайные искры при каждом 10-м клике
             if (clicks % 10 === 0) {
                 for (let i = 0; i < 3; i++) {
                     setTimeout(() => {
@@ -812,7 +836,6 @@
                 }
             }
             
-            // Ореховая анимация
             const shells = document.getElementById('peanut-shells');
             if (shells) {
                 shells.innerHTML = '🥜';
@@ -823,20 +846,17 @@
                 }, 400);
             }
             
-            // Дым
             const printerRect = printer?.getBoundingClientRect();
             if (printerRect) {
                 createSmoke(printerRect.left + printerRect.width / 2, printerRect.top + 20);
             }
             
-            // Прогресс-бар
             const progress = (clicks % 1000) / 10;
             const progressBar = document.getElementById('progress-bar');
             if (progressBar) {
                 progressBar.style.width = `${progress}%`;
             }
             
-            // Меняем сообщение об ошибке при прогресс-баре
             const errorMsg = document.getElementById('error-message');
             if (errorMsg) {
                 if (clicks % 1000 === 0 && clicks > 0) {
@@ -1108,6 +1128,34 @@
             toast.textContent = message;
             document.body.appendChild(toast);
             setTimeout(() => toast.remove(), 2000);
+        }
+
+        // ========== Обработчики меню ==========
+        if (walletCircle) {
+            walletCircle.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (walletAddress && disconnectMenu) {
+                    disconnectMenu.classList.toggle('show');
+                } else if (tonConnectUI && !walletAddress) {
+                    tonConnectUI.openModal();
+                }
+            });
+        }
+
+        document.addEventListener('click', () => {
+            if (disconnectMenu) {
+                disconnectMenu.classList.remove('show');
+            }
+        });
+
+        if (disconnectMenu) {
+            const disconnectBtn = document.getElementById('disconnect-btn');
+            if (disconnectBtn) {
+                disconnectBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    disconnectWallet();
+                });
+            }
         }
 
         function init() {
