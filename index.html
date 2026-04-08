@@ -26,10 +26,10 @@
             margin: 0 auto;
         }
 
-        /* Маленькая круглая кнопка по центру */
+        /* Кнопка подключения кошелька */
         .wallet-circle {
-            width: 36px;
-            height: 36px;
+            width: 44px;
+            height: 44px;
             background: #3b82f6;
             border-radius: 50%;
             display: flex;
@@ -46,8 +46,8 @@
         }
 
         .wallet-circle svg {
-            width: 20px;
-            height: 20px;
+            width: 24px;
+            height: 24px;
             stroke: white;
             stroke-width: 2;
             fill: none;
@@ -70,7 +70,7 @@
             color: #f5c542;
         }
 
-        /* Принтер */
+        /* Полноценный принтер */
         .printer-container {
             background: #151e2c;
             border-radius: 30px;
@@ -83,46 +83,59 @@
         .printer {
             cursor: pointer;
             margin-bottom: 20px;
-        }
-
-        .printer-body {
-            background: #2a3a4a;
-            border-radius: 16px;
-            padding: 20px;
             position: relative;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
 
-        .printer-paper-top {
-            width: 80%;
-            height: 30px;
-            background: #e0e0e0;
-            margin: -10px auto 0;
-            border-radius: 8px 8px 0 0;
+        /* Стили для 3D принтера */
+        .printer-3d {
+            background: #2c3e4e;
+            border-radius: 20px;
+            padding: 20px 15px;
             position: relative;
-            z-index: 1;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1);
+            border-bottom: 3px solid #1a2a3a;
         }
 
+        /* Верхняя крышка */
+        .printer-top {
+            background: #34495e;
+            border-radius: 15px 15px 5px 5px;
+            padding: 10px;
+            margin: -25px -15px 15px -15px;
+            position: relative;
+            border-bottom: 2px solid #2c3e4e;
+        }
+
+        .printer-top .handle {
+            width: 40px;
+            height: 6px;
+            background: #5d6e7e;
+            border-radius: 3px;
+            margin: 0 auto;
+        }
+
+        /* Экран принтера */
         .printer-screen {
             background: #0a0f1e;
-            border-radius: 12px;
-            padding: 15px;
-            text-align: center;
+            border-radius: 10px;
+            padding: 12px;
             margin-bottom: 15px;
-            border: 1px solid #3a4a5a;
+            border: 1px solid #1e2a3a;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
         }
 
         .error-message {
             font-family: monospace;
             color: #ff4444;
-            font-size: 14px;
-            margin-bottom: 10px;
+            font-size: 12px;
+            margin-bottom: 8px;
             animation: blink 1s infinite;
+            text-shadow: 0 0 2px rgba(255,0,0,0.5);
         }
 
         @keyframes blink {
             0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
+            50% { opacity: 0.6; }
         }
 
         .progress-bar-container {
@@ -133,44 +146,149 @@
         }
 
         .progress-bar {
-            background: #f5c542;
+            background: linear-gradient(90deg, #f5c542, #d4a017);
             width: 0%;
             height: 100%;
             transition: width 0.3s;
+            border-radius: 10px;
         }
 
-        .printer-buttons {
+        /* Панель кнопок */
+        .printer-buttons-panel {
             display: flex;
             gap: 12px;
             justify-content: center;
-            margin-top: 10px;
+            margin-bottom: 15px;
         }
 
-        .printer-button {
-            width: 30px;
-            height: 30px;
+        .printer-btn {
+            width: 35px;
+            height: 35px;
             background: #1e2a3a;
-            border-radius: 8px;
-            box-shadow: inset 0 1px 2px rgba(255,255,255,0.1), 0 2px 3px rgba(0,0,0,0.3);
+            border-radius: 50%;
+            box-shadow: inset 0 1px 2px rgba(255,255,255,0.1), 0 2px 4px rgba(0,0,0,0.3);
+            transition: all 0.1s;
         }
 
-        .printer-button.red {
+        .printer-btn.red {
             background: #c0392b;
+            box-shadow: inset 0 1px 2px rgba(255,255,255,0.2), 0 2px 4px rgba(0,0,0,0.3);
         }
 
-        .printer-paper-bottom {
-            width: 90%;
-            height: 15px;
+        .printer-btn.green {
+            background: #27ae60;
+        }
+
+        /* Лоток для бумаги */
+        .paper-tray {
+            background: #5d6e7e;
+            border-radius: 5px;
+            padding: 8px;
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .paper-stack {
             background: #e0e0e0;
+            height: 15px;
+            width: 80%;
             margin: 0 auto;
-            border-radius: 0 0 8px 8px;
+            border-radius: 3px;
+            position: relative;
         }
 
+        .paper-stack::before {
+            content: '';
+            position: absolute;
+            top: -3px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: #f0f0f0;
+            border-radius: 2px;
+        }
+
+        /* Выход бумаги сверху */
+        .paper-output {
+            background: #e0e0e0;
+            height: 8px;
+            width: 70%;
+            margin: -10px auto 10px auto;
+            border-radius: 4px 4px 0 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Орехи */
         .peanut-shells {
             margin-top: 15px;
+            font-size: 28px;
+            letter-spacing: 10px;
+            min-height: 55px;
+            text-shadow: 0 0 5px rgba(245,197,66,0.5);
+        }
+
+        /* Анимации эффектов */
+        @keyframes clickFlash {
+            0% { transform: scale(1); }
+            50% { transform: scale(0.98); filter: brightness(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .printer-clicked {
+            animation: clickFlash 0.1s ease-out;
+        }
+
+        @keyframes shellPop {
+            0% { transform: scale(0) rotate(0deg); opacity: 0; }
+            50% { transform: scale(1.3) rotate(180deg); opacity: 1; }
+            100% { transform: scale(1) rotate(360deg); opacity: 1; }
+        }
+
+        .shell-pop {
+            animation: shellPop 0.4s ease-out;
+            display: inline-block;
+        }
+
+        @keyframes smokeFloat {
+            0% { opacity: 0; transform: translateY(0) scale(0.8); }
+            30% { opacity: 0.8; transform: translateY(-10px) scale(1.1); }
+            100% { opacity: 0; transform: translateY(-40px) scale(1.5); }
+        }
+
+        .smoke-particle {
+            position: absolute;
             font-size: 24px;
-            letter-spacing: 8px;
-            min-height: 50px;
+            pointer-events: none;
+            animation: smokeFloat 0.6s ease-out forwards;
+            filter: blur(1px);
+        }
+
+        @keyframes spark {
+            0% { opacity: 0; transform: scale(0); }
+            50% { opacity: 1; transform: scale(1); }
+            100% { opacity: 0; transform: scale(0); }
+        }
+
+        .spark {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: #ffaa00;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: spark 0.3s ease-out forwards;
+            box-shadow: 0 0 5px #ffaa00;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-3px); }
+            75% { transform: translateX(3px); }
+        }
+
+        .printer-shake {
+            animation: shake 0.1s ease-in-out 3;
         }
 
         .click-counter {
@@ -354,37 +472,6 @@
             color: #8aa0b5;
         }
 
-        /* Анимации */
-        @keyframes clickFlash {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.02); filter: brightness(1.1); }
-            100% { transform: scale(1); }
-        }
-
-        .printer-clicked {
-            animation: clickFlash 0.1s ease-out;
-        }
-
-        @keyframes shellPop {
-            0% { transform: scale(0); opacity: 0; }
-            50% { transform: scale(1.2); opacity: 1; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
-        .shell-pop {
-            animation: shellPop 0.3s ease-out;
-        }
-
-        @keyframes smokeFloat {
-            0% { opacity: 0; transform: translateY(0); }
-            20% { opacity: 0.8; }
-            100% { opacity: 0; transform: translateY(-30px); }
-        }
-
-        .smoke-animation {
-            animation: smokeFloat 0.5s ease-out;
-        }
-
         /* Капча */
         .captcha-overlay {
             position: fixed;
@@ -442,7 +529,6 @@
             color: #8aa0b5;
         }
 
-        /* Уведомления */
         .toast {
             position: fixed;
             bottom: 20px;
@@ -462,7 +548,7 @@
 </head>
 <body>
     <div class="game-container">
-        <!-- Маленькая круглая кнопка по центру -->
+        <!-- Кнопка подключения кошелька -->
         <div id="wallet-circle" class="wallet-circle">
             <svg viewBox="0 0 24 24" stroke="white" stroke-width="2" fill="none">
                 <circle cx="12" cy="12" r="10" />
@@ -477,24 +563,42 @@
             <div class="balance-value" id="pnut-balance">0</div>
         </div>
 
-        <!-- Принтер -->
+        <!-- Полноценный принтер -->
         <div class="printer-container">
             <div class="printer" id="printer">
-                <div class="printer-paper-top"></div>
-                <div class="printer-body">
+                <!-- Выход бумаги сверху -->
+                <div class="paper-output"></div>
+
+                <!-- Основной корпус принтера -->
+                <div class="printer-3d">
+                    <!-- Верхняя крышка -->
+                    <div class="printer-top">
+                        <div class="handle"></div>
+                    </div>
+
+                    <!-- Экран -->
                     <div class="printer-screen">
-                        <div class="error-message">PAPER JAM</div>
+                        <div class="error-message" id="error-message">PAPER JAM</div>
                         <div class="progress-bar-container">
                             <div class="progress-bar" id="progress-bar"></div>
                         </div>
                     </div>
-                    <div class="printer-buttons">
-                        <div class="printer-button"></div>
-                        <div class="printer-button"></div>
-                        <div class="printer-button red"></div>
+
+                    <!-- Панель кнопок -->
+                    <div class="printer-buttons-panel">
+                        <div class="printer-btn"></div>
+                        <div class="printer-btn green"></div>
+                        <div class="printer-btn red"></div>
+                        <div class="printer-btn"></div>
+                    </div>
+
+                    <!-- Лоток с бумагой -->
+                    <div class="paper-tray">
+                        <div class="paper-stack"></div>
                     </div>
                 </div>
-                <div class="printer-paper-bottom"></div>
+
+                <!-- Орехи -->
                 <div class="peanut-shells" id="peanut-shells"></div>
             </div>
             <div class="click-counter">
@@ -503,7 +607,7 @@
             <button id="click-btn" class="click-btn">🔨 FIX THE PRINTER</button>
         </div>
 
-        <!-- Бустеры -->
+        <!-- Бустеры, рефералы, лидерборд, достижения (без изменений) -->
         <div class="boosters">
             <div class="booster" data-booster="double">
                 <div class="booster-icon">⚡</div>
@@ -522,7 +626,6 @@
             </div>
         </div>
 
-        <!-- Рефералы -->
         <div class="referral-section">
             <div class="referral-title">👥 Invite friends, earn more</div>
             <div class="referral-link-container">
@@ -534,7 +637,6 @@
             </div>
         </div>
 
-        <!-- Лидерборд -->
         <div class="leaderboard">
             <div class="leaderboard-title">🏆 Top Clickers 🏆</div>
             <div id="leaderboard-list" class="leaderboard-list">
@@ -542,7 +644,6 @@
             </div>
         </div>
 
-        <!-- Достижения -->
         <div class="achievements">
             <div class="achievement" data-achievement="100">
                 <div class="achievement-icon">🔧</div>
@@ -655,73 +756,32 @@
             console.log('Fetching real balance for', walletAddress);
         }
 
-        // ========== Капча ==========
-        function showCaptcha() {
-            if (captchaActive) return;
-            captchaActive = true;
-            
-            let wasAutoClickerActive = autoClickerActive;
-            if (autoClickerActive) {
-                stopAutoClicker();
+        // ========== Эффекты ==========
+        function createSmoke(x, y) {
+            const smoke = document.createElement('div');
+            smoke.className = 'smoke-particle';
+            smoke.textContent = '💨';
+            smoke.style.left = x + 'px';
+            smoke.style.top = y + 'px';
+            document.body.appendChild(smoke);
+            setTimeout(() => smoke.remove(), 600);
+        }
+
+        function createSpark(x, y) {
+            const spark = document.createElement('div');
+            spark.className = 'spark';
+            spark.style.left = x + 'px';
+            spark.style.top = y + 'px';
+            document.body.appendChild(spark);
+            setTimeout(() => spark.remove(), 300);
+        }
+
+        function shakePrinter() {
+            const printer = document.getElementById('printer');
+            if (printer) {
+                printer.classList.add('printer-shake');
+                setTimeout(() => printer.classList.remove('printer-shake'), 300);
             }
-            
-            const captchaDiv = document.createElement('div');
-            captchaDiv.className = 'captcha-overlay';
-            captchaDiv.innerHTML = `
-                <div class="captcha-window">
-                    <div class="captcha-icon">🔧</div>
-                    <p>Prove you're not a bot</p>
-                    <div class="captcha-buttons">
-                        <button id="captcha-btn" class="captcha-confirm">I'm human</button>
-                    </div>
-                    <div class="captcha-timeout" id="captcha-timeout">⏱️ 10 seconds</div>
-                </div>
-            `;
-            document.body.appendChild(captchaDiv);
-            
-            let timeLeft = 10;
-            const timeoutDisplay = document.getElementById('captcha-timeout');
-            
-            const timer = setInterval(() => {
-                timeLeft--;
-                if (timeoutDisplay) {
-                    timeoutDisplay.textContent = `⏱️ ${timeLeft} seconds`;
-                }
-                if (timeLeft <= 0) {
-                    clearInterval(timer);
-                    if (captchaDiv && captchaDiv.parentNode) {
-                        captchaDiv.remove();
-                    }
-                    captchaActive = false;
-                    showToast('❌ Captcha timeout! Clicks reset.');
-                    clicksSinceCaptcha = 0;
-                    pendingClicks = 0;
-                    if (wasAutoClickerActive) {
-                        activateAutoClicker();
-                    }
-                }
-            }, 1000);
-            
-            const btn = document.getElementById('captcha-btn');
-            btn.onclick = () => {
-                clearInterval(timer);
-                captchaDiv.remove();
-                captchaActive = false;
-                clicksSinceCaptcha = 0;
-                showToast('✅ Human verified!');
-                
-                if (pendingClicks > 0) {
-                    showToast(`📦 Processing ${pendingClicks} pending clicks...`);
-                    for (let i = 0; i < pendingClicks; i++) {
-                        processClick();
-                    }
-                    pendingClicks = 0;
-                }
-                
-                if (wasAutoClickerActive) {
-                    activateAutoClicker();
-                }
-            };
         }
 
         // ========== Процессинг клика ==========
@@ -730,12 +790,29 @@
             pnutBalance += earnAmount;
             clicks++;
             
+            // Анимация принтера
             const printer = document.getElementById('printer');
             if (printer) {
                 printer.classList.add('printer-clicked');
                 setTimeout(() => printer.classList.remove('printer-clicked'), 100);
             }
             
+            // Эффекты
+            shakePrinter();
+            
+            // Случайные искры при каждом 10-м клике
+            if (clicks % 10 === 0) {
+                for (let i = 0; i < 3; i++) {
+                    setTimeout(() => {
+                        const rect = printer?.getBoundingClientRect();
+                        if (rect) {
+                            createSpark(rect.left + Math.random() * rect.width, rect.top + Math.random() * rect.height);
+                        }
+                    }, i * 50);
+                }
+            }
+            
+            // Ореховая анимация
             const shells = document.getElementById('peanut-shells');
             if (shells) {
                 shells.innerHTML = '🥜';
@@ -743,29 +820,37 @@
                 setTimeout(() => {
                     shells.innerHTML = '';
                     shells.classList.remove('shell-pop');
-                }, 300);
+                }, 400);
             }
             
-            const smoke = document.createElement('div');
-            smoke.textContent = '💨';
-            smoke.style.position = 'absolute';
-            smoke.style.fontSize = '20px';
-            smoke.style.pointerEvents = 'none';
-            smoke.style.left = '50%';
-            smoke.style.top = '20%';
-            smoke.style.transform = 'translateX(-50%)';
-            smoke.classList.add('smoke-animation');
-            const printerBody = document.querySelector('.printer-body');
-            if (printerBody) {
-                printerBody.style.position = 'relative';
-                printerBody.appendChild(smoke);
-                setTimeout(() => smoke.remove(), 500);
+            // Дым
+            const printerRect = printer?.getBoundingClientRect();
+            if (printerRect) {
+                createSmoke(printerRect.left + printerRect.width / 2, printerRect.top + 20);
             }
             
+            // Прогресс-бар
             const progress = (clicks % 1000) / 10;
             const progressBar = document.getElementById('progress-bar');
             if (progressBar) {
                 progressBar.style.width = `${progress}%`;
+            }
+            
+            // Меняем сообщение об ошибке при прогресс-баре
+            const errorMsg = document.getElementById('error-message');
+            if (errorMsg) {
+                if (clicks % 1000 === 0 && clicks > 0) {
+                    errorMsg.textContent = 'FIXED!';
+                    errorMsg.style.color = '#27ae60';
+                    setTimeout(() => {
+                        errorMsg.textContent = 'PAPER JAM';
+                        errorMsg.style.color = '#ff4444';
+                    }, 2000);
+                } else if (progress > 50) {
+                    errorMsg.textContent = 'ALMOST FIXED...';
+                } else {
+                    errorMsg.textContent = 'PAPER JAM';
+                }
             }
             
             updateUI();
@@ -946,6 +1031,75 @@
                     <span>${entry.clicks} clicks</span>
                 </div>
             `).join('');
+        }
+
+        // ========== Капча ==========
+        function showCaptcha() {
+            if (captchaActive) return;
+            captchaActive = true;
+            
+            let wasAutoClickerActive = autoClickerActive;
+            if (autoClickerActive) {
+                stopAutoClicker();
+            }
+            
+            const captchaDiv = document.createElement('div');
+            captchaDiv.className = 'captcha-overlay';
+            captchaDiv.innerHTML = `
+                <div class="captcha-window">
+                    <div class="captcha-icon">🔧</div>
+                    <p>Prove you're not a bot</p>
+                    <div class="captcha-buttons">
+                        <button id="captcha-btn" class="captcha-confirm">I'm human</button>
+                    </div>
+                    <div class="captcha-timeout" id="captcha-timeout">⏱️ 10 seconds</div>
+                </div>
+            `;
+            document.body.appendChild(captchaDiv);
+            
+            let timeLeft = 10;
+            const timeoutDisplay = document.getElementById('captcha-timeout');
+            
+            const timer = setInterval(() => {
+                timeLeft--;
+                if (timeoutDisplay) {
+                    timeoutDisplay.textContent = `⏱️ ${timeLeft} seconds`;
+                }
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    if (captchaDiv && captchaDiv.parentNode) {
+                        captchaDiv.remove();
+                    }
+                    captchaActive = false;
+                    showToast('❌ Captcha timeout! Clicks reset.');
+                    clicksSinceCaptcha = 0;
+                    pendingClicks = 0;
+                    if (wasAutoClickerActive) {
+                        activateAutoClicker();
+                    }
+                }
+            }, 1000);
+            
+            const btn = document.getElementById('captcha-btn');
+            btn.onclick = () => {
+                clearInterval(timer);
+                captchaDiv.remove();
+                captchaActive = false;
+                clicksSinceCaptcha = 0;
+                showToast('✅ Human verified!');
+                
+                if (pendingClicks > 0) {
+                    showToast(`📦 Processing ${pendingClicks} pending clicks...`);
+                    for (let i = 0; i < pendingClicks; i++) {
+                        processClick();
+                    }
+                    pendingClicks = 0;
+                }
+                
+                if (wasAutoClickerActive) {
+                    activateAutoClicker();
+                }
+            };
         }
 
         function showToast(message) {
