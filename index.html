@@ -28,11 +28,9 @@
 
         /* Шапка */
         .header {
-            background: #151e2c;
-            padding: 16px;
-            border-radius: 20px;
+            background: transparent;
+            padding: 0;
             margin-bottom: 20px;
-            border: 1px solid #2a3a4a;
             text-align: center;
         }
 
@@ -40,19 +38,15 @@
             background: #3b82f6;
             color: white;
             border: none;
-            padding: 12px 20px;
+            padding: 12px 24px;
             border-radius: 30px;
             font-weight: bold;
             cursor: pointer;
             font-size: 16px;
-            width: 100%;
-            max-width: 220px;
-            margin: 0 auto;
-            display: inline-block;
+            margin-bottom: 12px;
         }
 
         .balance-section {
-            margin-top: 12px;
             text-align: center;
         }
 
@@ -459,7 +453,7 @@
 </head>
 <body>
     <div class="game-container">
-        <!-- Шапка: синяя кнопка Connect Wallet + баланс -->
+        <!-- Шапка: только кнопка и баланс -->
         <div class="header">
             <div id="wallet-info">
                 <button id="connect-wallet" class="connect-btn">Connect Wallet</button>
@@ -618,7 +612,7 @@
                     walletAddress = wallet.account.address;
                     document.getElementById('wallet-info').innerHTML = `
                         <div>
-                            <button id="disconnect-wallet" class="connect-btn" style="background: #ff4444;">Disconnect ${walletAddress.slice(0, 6)}...${walletAddress.slice(-4)}</button>
+                            <button id="disconnect-wallet" class="connect-btn" style="background: #ff4444;">Disconnect</button>
                         </div>
                     `;
                     document.getElementById('disconnect-wallet')?.addEventListener('click', () => {
