@@ -24,30 +24,44 @@
         .game-container {
             max-width: 500px;
             margin: 0 auto;
+            position: relative;
         }
 
-        /* Шапка */
-        .header {
-            background: transparent;
-            padding: 0;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        .connect-btn {
+        /* Кнопка-кружок в правом верхнем углу */
+        .wallet-circle {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 44px;
+            height: 44px;
             background: #3b82f6;
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 30px;
-            font-weight: bold;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             cursor: pointer;
-            font-size: 16px;
-            margin-bottom: 12px;
+            transition: all 0.2s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            z-index: 100;
         }
 
+        .wallet-circle:active {
+            transform: scale(0.95);
+        }
+
+        .wallet-circle svg {
+            width: 24px;
+            height: 24px;
+            stroke: white;
+            stroke-width: 2;
+            fill: none;
+        }
+
+        /* Баланс */
         .balance-section {
             text-align: center;
+            margin-bottom: 20px;
+            padding-top: 8px;
         }
 
         .balance-label {
@@ -453,15 +467,19 @@
 </head>
 <body>
     <div class="game-container">
-        <!-- Шапка: только кнопка и баланс -->
-        <div class="header">
-            <div id="wallet-info">
-                <button id="connect-wallet" class="connect-btn">Connect Wallet</button>
-            </div>
-            <div class="balance-section">
-                <div class="balance-label">Your $PNUT</div>
-                <div class="balance-value" id="pnut-balance">0</div>
-            </div>
+        <!-- Кнопка-кружок в правом верхнем углу -->
+        <div id="wallet-circle" class="wallet-circle">
+            <svg viewBox="0 0 24 24" stroke="white" stroke-width="2" fill="none">
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" y1="8" x2="12" y2="16" />
+                <line x1="8" y1="12" x2="16" y2="12" />
+            </svg>
+        </div>
+
+        <!-- Баланс -->
+        <div class="balance-section">
+            <div class="balance-label">Your $PNUT</div>
+            <div class="balance-value" id="pnut-balance">0</div>
         </div>
 
         <!-- Принтер -->
@@ -604,27 +622,35 @@
             
             tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
                 manifestUrl: 'https://fedpostnut.com/tonconnect-manifest.json',
-                buttonRootId: 'connect-wallet'
+                buttonRootId: 'wallet-circle'
             });
             
             tonConnectUI.onStatusChange(async (wallet) => {
                 if (wallet) {
                     walletAddress = wallet.account.address;
-                    document.getElementById('wallet-info').innerHTML = `
-                        <div>
-                            <button id="disconnect-wallet" class="connect-btn" style="background: #ff4444;">Disconnect</button>
-                        </div>
-                    `;
-                    document.getElementById('disconnect-wallet')?.addEventListener('click', () => {
-                        tonConnectUI.disconnect();
-                        walletAddress = null;
-                        document.getElementById('wallet-info').innerHTML = '<button id="connect-wallet" class="connect-btn">Connect Wallet</button>';
-                        document.getElementById('connect-wallet')?.addEventListener('click', () => tonConnectUI.openModal());
-                    });
-                    
+                    const circle = document.getElementById('wallet-circle');
+                    if (circle) {
+                        circle.style.background = '#10b981';
+                        circle.innerHTML = `
+                            <svg viewBox="0 0 24 24" stroke="white" stroke-width="2" fill="none">
+                                <path d="M20 6L9 17L4 12" stroke="white" stroke-width="2" fill="none"/>
+                            </svg>
+                        `;
+                    }
                     await fetchRealBalance();
                 } else {
                     walletAddress = null;
+                    const circle = document.getElementById('wallet-circle');
+                    if (circle) {
+                        circle.style.background = '#3b82f6';
+                        circle.innerHTML = `
+                            <svg viewBox="0 0 24 24" stroke="white" stroke-width="2" fill="none">
+                                <circle cx="12" cy="12" r="10" />
+                                <line x1="12" y1="8" x2="12" y2="16" />
+                                <line x1="8" y1="12" x2="16" y2="12" />
+                            </svg>
+                        `;
+                    }
                 }
             });
         }
