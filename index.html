@@ -28,40 +28,32 @@
 
         /* Шапка */
         .header {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 12px;
             background: #151e2c;
             padding: 16px;
             border-radius: 20px;
             margin-bottom: 20px;
             border: 1px solid #2a3a4a;
-        }
-
-        .wallet-section {
-            width: 100%;
             text-align: center;
         }
 
         .connect-btn {
-    background: #3b82f6;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 30px;
-    font-weight: bold;
-    cursor: pointer;
-    font-size: 14px;
-    width: 100%;
-    max-width: 200px;
-    margin: 0 auto;
-    display: block;
-}
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            max-width: 220px;
+            margin: 0 auto;
+            display: inline-block;
+        }
 
         .balance-section {
+            margin-top: 12px;
             text-align: center;
-            width: 100%;
         }
 
         .balance-label {
@@ -98,7 +90,6 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
 
-        /* Бумага сверху */
         .printer-paper-top {
             width: 80%;
             height: 30px;
@@ -468,19 +459,17 @@
 </head>
 <body>
     <div class="game-container">
-        <!-- Шапка -->
+        <!-- Шапка: синяя кнопка Connect Wallet + баланс -->
         <div class="header">
-            <div class="wallet-section">
-                <div id="wallet-info">
-                    <button id="connect-wallet" class="connect-btn">Connect Wallet</button>
-                </div>
+            <div id="wallet-info">
+                <button id="connect-wallet" class="connect-btn">Connect Wallet</button>
             </div>
             <div class="balance-section">
                 <div class="balance-label">Your $PNUT</div>
                 <div class="balance-value" id="pnut-balance">0</div>
             </div>
         </div>
-        
+
         <!-- Принтер -->
         <div class="printer-container">
             <div class="printer" id="printer">
@@ -628,15 +617,14 @@
                 if (wallet) {
                     walletAddress = wallet.account.address;
                     document.getElementById('wallet-info').innerHTML = `
-                        <div style="display: flex; align-items: center; justify-content: center; gap: 8px;">
-                            <span>✅ ${walletAddress.slice(0, 6)}...${walletAddress.slice(-4)}</span>
-                            <button id="disconnect-wallet" class="connect-btn" style="background: #ff4444;">Disconnect</button>
+                        <div>
+                            <button id="disconnect-wallet" class="connect-btn" style="background: #ff4444;">Disconnect ${walletAddress.slice(0, 6)}...${walletAddress.slice(-4)}</button>
                         </div>
                     `;
                     document.getElementById('disconnect-wallet')?.addEventListener('click', () => {
                         tonConnectUI.disconnect();
                         walletAddress = null;
-                        document.getElementById('wallet-info').innerHTML = '<button id="connect-wallet" class="connect-btn">🔌 Connect Wallet</button>';
+                        document.getElementById('wallet-info').innerHTML = '<button id="connect-wallet" class="connect-btn">Connect Wallet</button>';
                         document.getElementById('connect-wallet')?.addEventListener('click', () => tonConnectUI.openModal());
                     });
                     
