@@ -4,16 +4,470 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>PNUT Clicker — Fix the Printer</title>
-    <link rel="stylesheet" href="style.css">
-    <!-- TON Connect UI -->
-    <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0a0f1e 0%, #0f1722 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding: 16px;
+        }
+
+        .game-container {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        /* Шапка */
+        .header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            background: #151e2c;
+            padding: 16px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            border: 1px solid #2a3a4a;
+        }
+
+        .wallet-section {
+            width: 100%;
+            text-align: center;
+        }
+
+        .connect-btn {
+            background: #f5c542;
+            color: #0a0f1e;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .balance-section {
+            text-align: center;
+            width: 100%;
+        }
+
+        .balance-label {
+            font-size: 12px;
+            color: #8aa0b5;
+        }
+
+        .balance-value {
+            font-size: 28px;
+            font-weight: bold;
+            color: #f5c542;
+        }
+
+        /* Принтер */
+        .printer-container {
+            background: #151e2c;
+            border-radius: 30px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+            border: 1px solid #2a3a4a;
+        }
+
+        .printer {
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        .printer-body {
+            background: #2a3a4a;
+            border-radius: 16px;
+            padding: 20px;
+            position: relative;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        /* Бумага сверху */
+        .printer-paper-top {
+            width: 80%;
+            height: 30px;
+            background: #e0e0e0;
+            margin: -10px auto 0;
+            border-radius: 8px 8px 0 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .printer-screen {
+            background: #0a0f1e;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            margin-bottom: 15px;
+            border: 1px solid #3a4a5a;
+        }
+
+        .error-message {
+            font-family: monospace;
+            color: #ff4444;
+            font-size: 14px;
+            margin-bottom: 10px;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .progress-bar-container {
+            background: #1e2a3a;
+            border-radius: 10px;
+            height: 8px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            background: #f5c542;
+            width: 0%;
+            height: 100%;
+            transition: width 0.3s;
+        }
+
+        .printer-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .printer-button {
+            width: 30px;
+            height: 30px;
+            background: #1e2a3a;
+            border-radius: 8px;
+            box-shadow: inset 0 1px 2px rgba(255,255,255,0.1), 0 2px 3px rgba(0,0,0,0.3);
+        }
+
+        .printer-button.red {
+            background: #c0392b;
+        }
+
+        .printer-paper-bottom {
+            width: 90%;
+            height: 15px;
+            background: #e0e0e0;
+            margin: 0 auto;
+            border-radius: 0 0 8px 8px;
+        }
+
+        .peanut-shells {
+            margin-top: 15px;
+            font-size: 24px;
+            letter-spacing: 8px;
+            min-height: 50px;
+        }
+
+        .click-counter {
+            font-size: 16px;
+            color: #8aa0b5;
+            margin-bottom: 15px;
+        }
+
+        .click-btn {
+            background: linear-gradient(135deg, #f5c542 0%, #d4a017 100%);
+            color: #0a0f1e;
+            border: none;
+            padding: 16px 30px;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            transition: transform 0.1s;
+        }
+
+        .click-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* Бустеры */
+        .boosters {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .booster {
+            background: #151e2c;
+            border-radius: 16px;
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #2a3a4a;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .booster:active {
+            transform: scale(0.96);
+        }
+
+        .booster-icon {
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+
+        .booster-name {
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .booster-cost {
+            font-size: 10px;
+            color: #f5c542;
+        }
+
+        /* Рефералы */
+        .referral-section {
+            background: #151e2c;
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 20px;
+            border: 1px solid #2a3a4a;
+        }
+
+        .referral-title {
+            font-size: 14px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .referral-link-container {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .referral-link-container input {
+            flex: 1;
+            background: #0a0f1e;
+            border: 1px solid #2a3a4a;
+            border-radius: 8px;
+            padding: 8px;
+            color: #e0e0e0;
+            font-size: 12px;
+        }
+
+        .copy-btn {
+            background: #f5c542;
+            color: #0a0f1e;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .referral-stats {
+            font-size: 12px;
+            color: #8aa0b5;
+            text-align: center;
+        }
+
+        /* Лидерборд */
+        .leaderboard {
+            background: #151e2c;
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 20px;
+            border: 1px solid #2a3a4a;
+        }
+
+        .leaderboard-title {
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 12px;
+        }
+
+        .leaderboard-list {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .leaderboard-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #2a3a4a;
+            font-size: 12px;
+        }
+
+        .leaderboard-rank {
+            color: #f5c542;
+            font-weight: bold;
+        }
+
+        /* Достижения */
+        .achievements {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .achievement {
+            background: #151e2c;
+            border-radius: 16px;
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #2a3a4a;
+            opacity: 0.5;
+            transition: all 0.2s;
+        }
+
+        .achievement.unlocked {
+            opacity: 1;
+            border-color: #f5c542;
+        }
+
+        .achievement-icon {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .achievement-name {
+            font-size: 10px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .achievement-progress {
+            font-size: 9px;
+            color: #8aa0b5;
+        }
+
+        /* Анимации */
+        @keyframes clickFlash {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); filter: brightness(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .printer-clicked {
+            animation: clickFlash 0.1s ease-out;
+        }
+
+        @keyframes shellPop {
+            0% { transform: scale(0); opacity: 0; }
+            50% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .shell-pop {
+            animation: shellPop 0.3s ease-out;
+        }
+
+        @keyframes smokeFloat {
+            0% { opacity: 0; transform: translateY(0); }
+            20% { opacity: 0.8; }
+            100% { opacity: 0; transform: translateY(-30px); }
+        }
+
+        .smoke-animation {
+            animation: smokeFloat 0.5s ease-out;
+        }
+
+        /* Капча */
+        .captcha-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+
+        .captcha-window {
+            background: #151e2c;
+            border-radius: 24px;
+            padding: 24px;
+            text-align: center;
+            border: 1px solid #f5c542;
+            max-width: 280px;
+            width: 90%;
+        }
+
+        .captcha-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .captcha-window p {
+            margin-bottom: 20px;
+            color: #e0e0e0;
+            font-size: 16px;
+        }
+
+        .captcha-buttons {
+            display: flex;
+            justify-content: center;
+        }
+
+        .captcha-confirm {
+            background: #f5c542;
+            color: #0a0f1e;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .captcha-timeout {
+            margin-top: 16px;
+            font-size: 12px;
+            color: #8aa0b5;
+        }
+
+        /* Уведомления */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #f5c542;
+            color: #0a0f1e;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: bold;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            white-space: nowrap;
+        }
+    </style>
 </head>
 <body>
     <div class="game-container">
-        <!-- Шапка с балансом и подключением кошелька -->
+        <!-- Шапка -->
         <div class="header">
             <div class="wallet-section">
-                <div id="wallet-info" class="wallet-info">
+                <div id="wallet-info">
                     <button id="connect-wallet" class="connect-btn">🔌 Connect Wallet</button>
                 </div>
             </div>
@@ -23,12 +477,13 @@
             </div>
         </div>
 
-        <!-- Принтер для кликов -->
+        <!-- Принтер -->
         <div class="printer-container">
             <div class="printer" id="printer">
+                <div class="printer-paper-top"></div>
                 <div class="printer-body">
-                    <div class="printer-screen" id="printer-screen">
-                        <div class="error-message">ERROR</div>
+                    <div class="printer-screen">
+                        <div class="error-message">PAPER JAM</div>
                         <div class="progress-bar-container">
                             <div class="progress-bar" id="progress-bar"></div>
                         </div>
@@ -39,7 +494,7 @@
                         <div class="printer-button red"></div>
                     </div>
                 </div>
-                <div class="printer-paper"></div>
+                <div class="printer-paper-bottom"></div>
                 <div class="peanut-shells" id="peanut-shells"></div>
             </div>
             <div class="click-counter">
@@ -48,7 +503,7 @@
             <button id="click-btn" class="click-btn">🔨 FIX THE PRINTER</button>
         </div>
 
-        <!-- Бонусы и бустеры -->
+        <!-- Бустеры -->
         <div class="boosters">
             <div class="booster" data-booster="double">
                 <div class="booster-icon">⚡</div>
@@ -67,7 +522,7 @@
             </div>
         </div>
 
-        <!-- Реферальная ссылка -->
+        <!-- Рефералы -->
         <div class="referral-section">
             <div class="referral-title">👥 Invite friends, earn more</div>
             <div class="referral-link-container">
@@ -83,11 +538,11 @@
         <div class="leaderboard">
             <div class="leaderboard-title">🏆 Top Clickers 🏆</div>
             <div id="leaderboard-list" class="leaderboard-list">
-                <div class="leaderboard-loading">Loading...</div>
+                <div class="leaderboard-loading">No data yet</div>
             </div>
         </div>
 
-        <!-- Табло достижений -->
+        <!-- Достижения -->
         <div class="achievements">
             <div class="achievement" data-achievement="100">
                 <div class="achievement-icon">🔧</div>
@@ -107,10 +562,422 @@
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
+    <script>
+        // ========== Игровые переменные ==========
+        let clicks = 0;
+        let pnutBalance = 0;
+        let clickMultiplier = 1;
+        let autoClickerActive = false;
+        let autoClickerInterval = null;
+        let walletAddress = null;
+
+        // ========== Защита от накрутки ==========
+        let lastClickTime = 0;
+        const CLICK_COOLDOWN = 200;
+        let clicksSinceCaptcha = 0;
+        const CAPTCHA_INTERVAL = 100;
+        let captchaActive = false;
+        let pendingClicks = 0;
+
+        // Загрузка сохранённых данных
+        function loadGameData() {
+            const saved = localStorage.getItem('pnutClickerData');
+            if (saved) {
+                const data = JSON.parse(saved);
+                clicks = data.clicks || 0;
+                pnutBalance = data.pnutBalance || 0;
+                clickMultiplier = data.clickMultiplier || 1;
+                if (data.autoClickerActive) {
+                    activateAutoClicker();
+                }
+            }
+            updateUI();
+            checkAchievements();
+        }
+
+        function saveGameData() {
+            const data = {
+                clicks: clicks,
+                pnutBalance: pnutBalance,
+                clickMultiplier: clickMultiplier,
+                autoClickerActive: autoClickerActive
+            };
+            localStorage.setItem('pnutClickerData', JSON.stringify(data));
+        }
+
+        // ========== TON Connect ==========
+        let tonConnectUI = null;
+
+        function initTonConnect() {
+            if (typeof TON_CONNECT_UI === 'undefined') {
+                console.log('TON Connect UI not loaded yet');
+                return;
+            }
+            
+            tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
+                manifestUrl: 'https://fedpostnut.com/tonconnect-manifest.json',
+                buttonRootId: 'connect-wallet'
+            });
+            
+            tonConnectUI.onStatusChange(async (wallet) => {
+                if (wallet) {
+                    walletAddress = wallet.account.address;
+                    document.getElementById('wallet-info').innerHTML = `
+                        <div style="display: flex; align-items: center; justify-content: center; gap: 8px;">
+                            <span>✅ ${walletAddress.slice(0, 6)}...${walletAddress.slice(-4)}</span>
+                            <button id="disconnect-wallet" class="connect-btn" style="background: #ff4444;">Disconnect</button>
+                        </div>
+                    `;
+                    document.getElementById('disconnect-wallet')?.addEventListener('click', () => {
+                        tonConnectUI.disconnect();
+                        walletAddress = null;
+                        document.getElementById('wallet-info').innerHTML = '<button id="connect-wallet" class="connect-btn">🔌 Connect Wallet</button>';
+                        document.getElementById('connect-wallet')?.addEventListener('click', () => tonConnectUI.openModal());
+                    });
+                    
+                    await fetchRealBalance();
+                } else {
+                    walletAddress = null;
+                }
+            });
+        }
+
+        async function fetchRealBalance() {
+            if (!walletAddress) return;
+            console.log('Fetching real balance for', walletAddress);
+        }
+
+        // ========== Капча ==========
+        function showCaptcha() {
+            if (captchaActive) return;
+            captchaActive = true;
+            
+            let wasAutoClickerActive = autoClickerActive;
+            if (autoClickerActive) {
+                stopAutoClicker();
+            }
+            
+            const captchaDiv = document.createElement('div');
+            captchaDiv.className = 'captcha-overlay';
+            captchaDiv.innerHTML = `
+                <div class="captcha-window">
+                    <div class="captcha-icon">🔧</div>
+                    <p>Prove you're not a bot</p>
+                    <div class="captcha-buttons">
+                        <button id="captcha-btn" class="captcha-confirm">I'm human</button>
+                    </div>
+                    <div class="captcha-timeout" id="captcha-timeout">⏱️ 10 seconds</div>
+                </div>
+            `;
+            document.body.appendChild(captchaDiv);
+            
+            let timeLeft = 10;
+            const timeoutDisplay = document.getElementById('captcha-timeout');
+            
+            const timer = setInterval(() => {
+                timeLeft--;
+                if (timeoutDisplay) {
+                    timeoutDisplay.textContent = `⏱️ ${timeLeft} seconds`;
+                }
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    if (captchaDiv && captchaDiv.parentNode) {
+                        captchaDiv.remove();
+                    }
+                    captchaActive = false;
+                    showToast('❌ Captcha timeout! Clicks reset.');
+                    clicksSinceCaptcha = 0;
+                    pendingClicks = 0;
+                    if (wasAutoClickerActive) {
+                        activateAutoClicker();
+                    }
+                }
+            }, 1000);
+            
+            const btn = document.getElementById('captcha-btn');
+            btn.onclick = () => {
+                clearInterval(timer);
+                captchaDiv.remove();
+                captchaActive = false;
+                clicksSinceCaptcha = 0;
+                showToast('✅ Human verified!');
+                
+                if (pendingClicks > 0) {
+                    showToast(`📦 Processing ${pendingClicks} pending clicks...`);
+                    for (let i = 0; i < pendingClicks; i++) {
+                        processClick();
+                    }
+                    pendingClicks = 0;
+                }
+                
+                if (wasAutoClickerActive) {
+                    activateAutoClicker();
+                }
+            };
+        }
+
+        // ========== Процессинг клика ==========
+        function processClick() {
+            const earnAmount = 0.1 * clickMultiplier;
+            pnutBalance += earnAmount;
+            clicks++;
+            
+            const printer = document.getElementById('printer');
+            if (printer) {
+                printer.classList.add('printer-clicked');
+                setTimeout(() => printer.classList.remove('printer-clicked'), 100);
+            }
+            
+            const shells = document.getElementById('peanut-shells');
+            if (shells) {
+                shells.innerHTML = '🥜';
+                shells.classList.add('shell-pop');
+                setTimeout(() => {
+                    shells.innerHTML = '';
+                    shells.classList.remove('shell-pop');
+                }, 300);
+            }
+            
+            const smoke = document.createElement('div');
+            smoke.textContent = '💨';
+            smoke.style.position = 'absolute';
+            smoke.style.fontSize = '20px';
+            smoke.style.pointerEvents = 'none';
+            smoke.style.left = '50%';
+            smoke.style.top = '20%';
+            smoke.style.transform = 'translateX(-50%)';
+            smoke.classList.add('smoke-animation');
+            const printerBody = document.querySelector('.printer-body');
+            if (printerBody) {
+                printerBody.style.position = 'relative';
+                printerBody.appendChild(smoke);
+                setTimeout(() => smoke.remove(), 500);
+            }
+            
+            const progress = (clicks % 1000) / 10;
+            const progressBar = document.getElementById('progress-bar');
+            if (progressBar) {
+                progressBar.style.width = `${progress}%`;
+            }
+            
+            updateUI();
+            saveGameData();
+            checkAchievements();
+            
+            if (walletAddress) {
+                updateLeaderboard();
+            }
+        }
+
+        function handleClick(event) {
+            if (event && event.detail === 0 && !event.isTrusted) {
+                console.log('Bot detected');
+                showToast('🤖 Bot detected! Click blocked.');
+                return;
+            }
+            
+            const now = Date.now();
+            if (now - lastClickTime < CLICK_COOLDOWN) {
+                showToast('⏱️ Too fast! Slow down.');
+                return;
+            }
+            lastClickTime = now;
+            
+            if (captchaActive) {
+                pendingClicks++;
+                showToast('🔒 Captcha active. Click queued.');
+                return;
+            }
+            
+            clicksSinceCaptcha++;
+            
+            if (clicksSinceCaptcha >= CAPTCHA_INTERVAL) {
+                showCaptcha();
+                return;
+            }
+            
+            processClick();
+        }
+
+        function activateAutoClicker() {
+            if (autoClickerInterval) return;
+            autoClickerActive = true;
+            autoClickerInterval = setInterval(() => {
+                const now = Date.now();
+                if (!captchaActive && (now - lastClickTime >= CLICK_COOLDOWN)) {
+                    lastClickTime = now;
+                    processClick();
+                }
+            }, 1100);
+            showToast('🤖 Auto Clicker activated!');
+        }
+
+        function stopAutoClicker() {
+            if (autoClickerInterval) {
+                clearInterval(autoClickerInterval);
+                autoClickerInterval = null;
+            }
+            autoClickerActive = false;
+        }
+
+        // ========== Бустеры ==========
+        function buyBooster(type) {
+            if (type === 'double' && clickMultiplier === 1 && pnutBalance >= 50) {
+                pnutBalance -= 50;
+                clickMultiplier = 2;
+                showToast('⚡ Double Click activated!');
+                updateUI();
+                saveGameData();
+            } else if (type === 'auto' && !autoClickerActive && pnutBalance >= 200) {
+                pnutBalance -= 200;
+                activateAutoClicker();
+                updateUI();
+                saveGameData();
+            } else if (type === 'peanut' && pnutBalance >= 500) {
+                pnutBalance -= 500;
+                showToast('🥜 Peanut Rain! +50 clicks incoming...');
+                let clicksAdded = 0;
+                const addClickWithDelay = () => {
+                    if (clicksAdded < 50 && !captchaActive) {
+                        processClick();
+                        clicksAdded++;
+                        setTimeout(addClickWithDelay, 50);
+                    } else if (clicksAdded < 50 && captchaActive) {
+                        setTimeout(addClickWithDelay, 200);
+                    } else {
+                        showToast('✅ Peanut Rain complete!');
+                    }
+                };
+                addClickWithDelay();
+                updateUI();
+                saveGameData();
+            } else {
+                showToast('❌ Not enough $PNUT');
+            }
+        }
+
+        function updateUI() {
+            const clickCountEl = document.getElementById('click-count');
+            const balanceEl = document.getElementById('pnut-balance');
+            if (clickCountEl) clickCountEl.textContent = clicks;
+            if (balanceEl) balanceEl.textContent = pnutBalance.toFixed(1);
+        }
+
+        function checkAchievements() {
+            const achievements = { 100: 'Beginner Fixer', 1000: 'Printer Expert', 10000: 'Factory Owner' };
+            for (const [target, name] of Object.entries(achievements)) {
+                const achievementDiv = document.querySelector(`[data-achievement="${target}"]`);
+                if (achievementDiv) {
+                    if (clicks >= target && !achievementDiv.classList.contains('unlocked')) {
+                        achievementDiv.classList.add('unlocked');
+                        showToast(`🏆 Achievement unlocked: ${name}!`);
+                    }
+                    const progressSpan = achievementDiv.querySelector('.achievement-progress');
+                    if (progressSpan) {
+                        progressSpan.textContent = `${Math.min(clicks, target)}/${target}`;
+                    }
+                }
+            }
+        }
+
+        function initReferral() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const referrer = urlParams.get('ref');
+            
+            if (referrer && !localStorage.getItem('referred')) {
+                localStorage.setItem('referred', 'true');
+                console.log('Referred by:', referrer);
+                showToast('🎉 Welcome! You were referred!');
+            }
+            
+            const currentUrl = window.location.href.split('?')[0];
+            let userId = localStorage.getItem('userId');
+            if (!userId) {
+                userId = Math.random().toString(36).substring(2, 10);
+                localStorage.setItem('userId', userId);
+            }
+            
+            const referralLink = `${currentUrl}?ref=${userId}`;
+            const referralInput = document.getElementById('referral-link');
+            if (referralInput) referralInput.value = referralLink;
+            
+            const referrals = JSON.parse(localStorage.getItem('referrals') || '[]');
+            const referralCountEl = document.getElementById('referral-count');
+            const referralBonusEl = document.getElementById('referral-bonus');
+            if (referralCountEl) referralCountEl.textContent = referrals.length;
+            if (referralBonusEl) referralBonusEl.textContent = referrals.length * 10;
+        }
+
+        function updateLeaderboard() {
+            if (!walletAddress) return;
+            
+            let leaderboard = JSON.parse(localStorage.getItem('pnutLeaderboard') || '[]');
+            const existing = leaderboard.find(entry => entry.wallet === walletAddress);
+            
+            if (existing) {
+                existing.clicks = clicks;
+                existing.balance = pnutBalance;
+            } else {
+                leaderboard.push({ wallet: walletAddress, clicks: clicks, balance: pnutBalance, date: new Date().toISOString() });
+            }
+            
+            leaderboard.sort((a, b) => b.clicks - a.clicks);
+            const topLeaderboard = leaderboard.slice(0, 20);
+            localStorage.setItem('pnutLeaderboard', JSON.stringify(topLeaderboard));
+            renderLeaderboard(topLeaderboard);
+        }
+
+        function renderLeaderboard(leaderboard) {
+            const container = document.getElementById('leaderboard-list');
+            if (!container) return;
+            if (leaderboard.length === 0) { container.innerHTML = '<div class="leaderboard-loading">No data yet</div>'; return; }
+            container.innerHTML = leaderboard.map((entry, index) => `
+                <div class="leaderboard-item">
+                    <span class="leaderboard-rank">#${index + 1}</span>
+                    <span>${entry.wallet.slice(0, 6)}...${entry.wallet.slice(-4)}</span>
+                    <span>${entry.clicks} clicks</span>
+                </div>
+            `).join('');
+        }
+
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 2000);
+        }
+
+        function init() {
+            loadGameData();
+            initTonConnect();
+            initReferral();
+            
+            const clickBtn = document.getElementById('click-btn');
+            if (clickBtn) clickBtn.addEventListener('click', handleClick);
+            
+            document.querySelectorAll('.booster').forEach(booster => {
+                booster.addEventListener('click', () => buyBooster(booster.dataset.booster));
+            });
+            
+            const copyBtn = document.getElementById('copy-link');
+            if (copyBtn) {
+                copyBtn.addEventListener('click', () => {
+                    const linkInput = document.getElementById('referral-link');
+                    if (linkInput) {
+                        linkInput.select();
+                        document.execCommand('copy');
+                        showToast('✅ Link copied!');
+                    }
+                });
+            }
+            
+            const savedLeaderboard = JSON.parse(localStorage.getItem('pnutLeaderboard') || '[]');
+            renderLeaderboard(savedLeaderboard);
+        }
+
+        init();
+    </script>
 </body>
-</html>-a
-
-
-
-
+</html>
