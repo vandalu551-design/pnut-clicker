@@ -63,18 +63,15 @@
             background: #151e2c;
             border-radius: 12px;
             padding: 8px 0;
-            min-width: 140px;
+            min-width: 160px;
             z-index: 1000;
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
             border: 1px solid #2a3a4a;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.2s, visibility 0.2s;
+            display: none;
         }
 
         .disconnect-menu.show {
-            opacity: 1;
-            visibility: visible;
+            display: block;
         }
 
         .disconnect-menu button {
@@ -111,7 +108,6 @@
             color: #f5c542;
         }
 
-        /* Остальные стили (принтер, бустеры и т.д.) без изменений */
         .printer-container {
             background: #151e2c;
             border-radius: 30px;
@@ -568,7 +564,7 @@
 <body>
     <div class="game-container">
         <!-- Кнопка подключения кошелька -->
-        <div id="wallet-circle" class="wallet-circle" style="position: relative;">
+        <div id="wallet-circle" class="wallet-circle">
             <svg viewBox="0 0 24 24" stroke="white" stroke-width="2" fill="none">
                 <circle cx="12" cy="12" r="10" />
                 <line x1="12" y1="8" x2="12" y2="16" />
@@ -693,6 +689,7 @@
         // DOM элементы
         const walletCircle = document.getElementById('wallet-circle');
         const disconnectMenu = document.getElementById('disconnect-menu');
+        const disconnectBtn = document.getElementById('disconnect-btn');
 
         // Загрузка сохранённых данных
         function loadGameData() {
@@ -725,7 +722,7 @@
 
         function initTonConnect() {
             if (typeof TON_CONNECT_UI === 'undefined') {
-                console.log('TON Connect UI not loaded yet');
+                console.log('TON Connect UI not loaded yet, retrying...');
                 setTimeout(initTonConnect, 500);
                 return;
             }
@@ -738,17 +735,37 @@
             tonConnectUI.onStatusChange(async (wallet) => {
                 if (wallet) {
                     walletAddress = wallet.account.address;
+                    console.log('Wallet connected:', walletAddress);
                     if (walletCircle) {
                         walletCircle.style.background = '#10b981';
                         walletCircle.innerHTML = `
                             <svg viewBox="0 0 24 24" stroke="white" stroke-width="2" fill="none">
                                 <path d="M20 6L9 17L4 12" stroke="white" stroke-width="2" fill="none"/>
                             </svg>
+                            <div id="disconnect-menu" class="disconnect-menu">
+                                <button id="disconnect-btn">🔌 Disconnect Wallet</button>
+                            </div>
                         `;
+                        // Пересоздаём ссылки на элементы после обновления DOM
+                        const newDisconnectBtn = document.getElementById('disconnect-btn');
+                        const newDisconnectMenu = document.getElementById('disconnect-menu');
+                        if (newDisconnectBtn) {
+                            newDisconnectBtn.addEventListener('click', (e) => {
+                                e.stopPropagation();
+                                if (tonConnectUI) {
+                                    tonConnectUI.disconnect();
+                                }
+                                if (newDisconnectMenu) {
+                                    newDisconnectMenu.classList.remove('show');
+                                }
+                                showToast('🔌 Wallet disconnected');
+                            });
+                        }
                     }
                     await fetchRealBalance();
                 } else {
                     walletAddress = null;
+                    console.log('Wallet disconnected');
                     if (walletCircle) {
                         walletCircle.style.background = '#3b82f6';
                         walletCircle.innerHTML = `
@@ -757,10 +774,12 @@
                                 <line x1="12" y1="8" x2="12" y2="16" />
                                 <line x1="8" y1="12" x2="16" y2="12" />
                             </svg>
+                            <div id="disconnect-menu" class="disconnect-menu">
+                                <button id="disconnect-btn">🔌 Disconnect Wallet</button>
+                            </div>
                         `;
                     }
                 }
-                // Скрываем меню при изменении статуса
                 if (disconnectMenu) {
                     disconnectMenu.classList.remove('show');
                 }
@@ -772,15 +791,12 @@
             console.log('Fetching real balance for', walletAddress);
         }
 
-        // Отключение кошелька
+        // Функция отключения
         function disconnectWallet() {
             if (tonConnectUI) {
                 tonConnectUI.disconnect();
+                showToast('🔌 Wallet disconnected');
             }
-            if (disconnectMenu) {
-                disconnectMenu.classList.remove('show');
-            }
-            showToast('🔌 Wallet disconnected');
         }
 
         // ========== Эффекты ==========
@@ -933,7 +949,6 @@
             autoClickerActive = false;
         }
 
-        // ========== Бустеры ==========
         function buyBooster(type) {
             if (type === 'double' && clickMultiplier === 1 && pnutBalance >= 50) {
                 pnutBalance -= 50;
@@ -1053,7 +1068,6 @@
             `).join('');
         }
 
-        // ========== Капча ==========
         function showCaptcha() {
             if (captchaActive) return;
             captchaActive = true;
@@ -1130,32 +1144,39 @@
             setTimeout(() => toast.remove(), 2000);
         }
 
-        // ========== Обработчики меню ==========
+        // ========== Обработчики для кружка и меню ==========
         if (walletCircle) {
             walletCircle.addEventListener('click', (e) => {
                 e.stopPropagation();
-                if (walletAddress && disconnectMenu) {
-                    disconnectMenu.classList.toggle('show');
-                } else if (tonConnectUI && !walletAddress) {
-                    tonConnectUI.openModal();
+                // Если кошелёк подключён — показываем меню отключения
+                if (walletAddress) {
+                    const menu = document.getElementById('disconnect-menu');
+                    if (menu) {
+                        menu.classList.toggle('show');
+                    }
+                } else {
+                    // Если кошелёк не подключён — открываем TON Connect
+                    if (tonConnectUI) {
+                        tonConnectUI.openModal();
+                    }
                 }
             });
         }
 
+        // Закрываем меню при клике вне его
         document.addEventListener('click', () => {
-            if (disconnectMenu) {
-                disconnectMenu.classList.remove('show');
+            const menu = document.getElementById('disconnect-menu');
+            if (menu) {
+                menu.classList.remove('show');
             }
         });
 
-        if (disconnectMenu) {
-            const disconnectBtn = document.getElementById('disconnect-btn');
-            if (disconnectBtn) {
-                disconnectBtn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    disconnectWallet();
-                });
-            }
+        // Кнопка отключения (если существует в DOM при загрузке)
+        if (disconnectBtn) {
+            disconnectBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                disconnectWallet();
+            });
         }
 
         function init() {
